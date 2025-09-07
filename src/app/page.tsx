@@ -36,12 +36,11 @@ export default function Home() {
 async function work(i: number, shouldThrowError: boolean) {
   console.log(`work: running ${i}`);
 
+  await new Promise((resolve) => setTimeout(resolve, 1000 * i));
   // throw error to test
-  if (i === 2) {
+  if (i === 2 && shouldThrowError) {
     throw new Error(`work: error happened in ${i}`);
   }
-
-  await new Promise((resolve) => setTimeout(resolve, 1000 * i));
   console.log(`work: done ${i}`);
   return i ** 2;
 }
@@ -53,7 +52,7 @@ async function main(shouldThrowError: boolean) {
     const results = await Promise.all(promises);
     console.log("main: results", results);
   } catch (error) {
-    console.error("main: error", error);
+    console.log("main: error", error);
   }
 }
 
@@ -64,6 +63,6 @@ async function mainSettled(shouldThrowError: boolean) {
     const results = await Promise.allSettled(promises);
     console.log("main-settled: results", results);
   } catch (error) {
-    console.error("main-settled: error", error);
+    console.log("main-settled: error", error);
   }
 }

@@ -59,6 +59,7 @@ Watch the Console:
 ## Key concepts and common pitfalls
 
 - **No automatic cancellation**: `Promise.all` does not cancel in-flight promises when one rejects. If tasks have side effects (e.g., HTTP calls, file writes), you must implement cancellation or avoid re-entrancy yourself.
+- **No aggregate results on error (`Promise.all`)**: If any promise rejects, there is no "results" array/object to inspect; the call rejects immediately. Use `Promise.allSettled` or per-item wrapping if you need to inspect every outcome.
 - **Collect results individually**: Prefer `Promise.allSettled`, or wrap each task so it never rejects and returns a structured result indicating success/failure.
 - **Partial tolerance**: If you want to "use successes and ignore failures", individually `catch` during mapping and convert failures into identifiable results (e.g., `{ ok: false, reason }`).
 - **Concurrency and load**: Launching many promises at once can overwhelm external services. Add concurrency control (batching, rate limiting, or a queue).
