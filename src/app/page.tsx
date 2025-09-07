@@ -61,7 +61,24 @@ async function mainSettled(shouldThrowError: boolean) {
     console.log("main-settled: running");
     const promises = [1, 2, 3, 4, 5].map((i) => work(i, shouldThrowError));
     const results = await Promise.allSettled(promises);
-    console.log("main-settled: results", results);
+
+    const fulfilledResults = results
+      .filter(
+        (result): result is PromiseFulfilledResult<number> =>
+          result.status === "fulfilled",
+      )
+      .map((result) => result.value);
+
+    const rejectedResults = results
+      .filter(
+        (result): result is PromiseRejectedResult =>
+          result.status === "rejected",
+      )
+      .map((result) => result.reason);
+
+    console.log("main-settled: fulfilledResults", fulfilledResults);
+    console.log("main-settled: rejectedResults", rejectedResults);
+    console.log("main-settled: allResults", results);
   } catch (error) {
     console.log("main-settled: error", error);
   }
