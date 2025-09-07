@@ -1,4 +1,4 @@
-## the-dangers-of-promise-dot-all
+## The Dangers of Promise.all
 
 An interactive example that demonstrates the behavioral differences and common pitfalls of `Promise.all` vs `Promise.allSettled`.
 
